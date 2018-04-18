@@ -1,0 +1,169 @@
+     <!-- 注册 -->
+     <div class="modal fade" tabindex="-1" id="myModal" role="dialog" aria-labelledby="gridSystemModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="gridSystemModalLabel">西邮校园二手书街注册</h4>
+          </div>
+          <div class="modal-body">
+
+              <ul id="myTab" class="nav nav-tabs">
+                <li class="active">
+                    <a href="#shop" data-toggle="tab">
+                        商家注册
+                    </a>
+                </li>
+                <li><a href="#user" data-toggle="tab">用户注册</a></li>
+              </ul>
+              <div id="myTabContent" class="tab-content">
+                
+                <div class="tab-pane fade in active" id="shop">
+                  <form  enctype='multipart/form-data'>
+                       <!-- 用户名 -->
+                      <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">
+                                用户名：
+                            </label>
+                            <div class="col-md-5">
+                                <input type="text" class="form-control" placeholder="请输入邮箱……"   name="shopRegisterEmail" required autofocus="" id="shopRegisterEmail">
+                            </div>
+                        </div>
+                      </div>
+                     <!--学生证照片 -->
+                      <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">
+                                学生证照片：
+                            </label>
+                            <div class="col-md-5">
+                                <input type="file" class="form-control" placeholder="请输入邮箱……"    required autofocus="" id="shopCardImg" name="shopCardImg">
+                            </div>
+                        </div>
+                      </div>
+                      <!-- 输入密码啊 -->
+                      <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">
+                                密码：
+                            </label>
+                            <div class="col-md-5">
+                                <input type="password" class="form-control" placeholder="请输入密码……"   name="typeName" required autofocus="" id="shopRegisterPass">
+                            </div>
+                        </div>
+                        <!-- 重复密码 -->
+                      </div>
+                      <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">
+                                重复密码：
+                            </label>
+                            <div class="col-md-5">
+                                <input type="password" class="form-control" placeholder="请再输入密码……"   name="typeName" required autofocus="">
+                            </div>
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消注册</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" id="shopRegister">确认注册</button>
+                      </div>
+                  </form>
+                </div>
+                <div class="tab-pane fade " id="user">
+                    <!-- 用户名 -->
+                    <div class="row">
+                      <div class="form-group">
+                          <label class="col-md-3 control-label">
+                              用户名：
+                          </label>
+                          <div class="col-md-5">
+                              <input type="text" class="form-control" placeholder="请输入邮箱……"   name="userRegisterEmail" required autofocus="" id="userRegisterEmail">
+                          </div>
+                      </div>
+                    </div>
+                    <!-- 输入密码啊 -->
+                    <div class="row">
+                      <div class="form-group">
+                          <label class="col-md-3 control-label">
+                              密码：
+                          </label>
+                          <div class="col-md-5">
+                              <input type="password" class="form-control" placeholder="请输入密码……"   name="typeName" required autofocus="" id="userRegisterPass">
+                          </div>
+                      </div>
+                      <!-- 重复密码 -->
+                    </div>
+                    <div class="row">
+                      <div class="form-group">
+                          <label class="col-md-3 control-label">
+                              重复密码：
+                          </label>
+                          <div class="col-md-5">
+                              <input type="password" class="form-control" placeholder="请再输入密码……"   name="typeName" required autofocus="">
+                          </div>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">取消注册</button>
+                      <button type="button" class="btn btn-primary" data-dismiss="modal" id="userRegister">确认注册</button>
+                    </div>
+                </div>
+              </div>
+          </div>
+          
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+     <!-- 登录 -->
+     <div class="modal fade" tabindex="-1" id="myModal_1" role="dialog" aria-labelledby="gridSystemModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="gridSystemModalLabel">西邮校园二手书街登录</h4>
+          </div>
+          <div class="modal-body">
+              <!-- 用户名 -->
+              <div class="row">
+                <div class="form-group">
+                    <label class="col-md-3 control-label">
+                        用户名：
+                    </label>
+                    <div class="col-md-5">
+                        <input type="text" class="form-control" placeholder="请输入邮箱……"  id="loginEmail" name="typeName" required autofocus="">
+                    </div>
+                </div>
+              </div>
+            <!-- 输入密码 -->
+            <div class="row">
+              <div class="form-group">
+                  <label class="col-md-3 control-label">
+                      密码：
+                  </label>
+                  <div class="col-md-5">
+                      <input type="password" class="form-control" placeholder="请输入密码……"  id="loginPass" name="typeName" required autofocus="">
+                  </div>
+              </div>
+            </div>
+            <!-- 类型 -->
+            <div class="row">
+              <div class="form-group">
+                  <label class="col-md-3 control-label">
+                      类型：
+                  </label>
+                  <div class="col-md-5"  >
+                      商家<input type="radio"  class="form-inline"  value="shop" name="user_type" required >
+                      用户<input type="radio" class="form-inline"   value="user" name="user_type" required >
+                  </div>
+              </div>
+            </div> 
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">取消登录</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal" id="Submit">确认登录</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+
+    <link href="/stylesheets/index.css" rel="stylesheet">
+    <link href="/stylesheets/book_detail.css" rel="stylesheet">
+    <!-- Bootstrap -->
+    <link href="/stylesheets/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+        .row{
+          margin-bottom: 20px;
+        }
+
+        #collect{
+          position: absolute;
+          top: 150px;
+          left:50%;
+          width:900px;
+          margin-left:-450px;
+          min-height: 400px;
+          height: auto;
+        }
+        .collectItem{
+          display: inline-block;
+          width: 200px;
+          height: 45px;
+          line-height: 45px;
+          text-align: center;
+          font-size: 22px;
+          color:#fff;
+          background-color:#64CBB3;
+        }
+        ul#collectCon li{
+          margin-bottom:30px;
+          height: 90px;
+          height: 150px;
+          background-color: #fff;
+
+        }
+        p.img{
+          width: 150px;
+          margin-right:30px;
+        }
+        p img{
+          width: 150px;
+          height: 150px;
+        }
+        p.content{
+          width: 700px;
+          padding-top: 30px;
+          height: 150px;
+          line-height: 20px;
+          margin-bottom: 30px;
+          background-color: #fff;
+        }
+        p.img,p.content{
+            float: left;
+        }
+        .line{
+          height: 40px;
+          display: inline-block;
+        }
+       
+    </style>
+  </head>
+  <body style=" background-color: #E3EEEC">
+    <header class="ease" id="head">
+      <% include header.ejs%>
+    </header>
+    <div id="collect">
+      <p style="margin-bottom: 20px;"><span class="collectItem glyphicon glyphicon-star">我的收藏<span class="glyphicon glyphicon-star"></span></span></p>
+      <ul id="collectCon">
+        <% for(var i=0;i<collectData.length;i++){%>
+        <li>
+          <a href="/book_detail?id=<%=collectData[i].book_id%>">
+           <p class="img"><img src="/upload/<%=collectData[i].image_src%>" alt=""></p>
+           <p class="content">
+             <span class="line"><span>书名:</span><span><%=collectData[i].book_name%></span></span><br>
+             <span class="line"><span>作者:</span><span><%=collectData[i].book_author%></span></span><br>
+             <span class="line"> <span>简述:</span><span><%=collectData[i].summary%></span></span><br>
+           </p>
+          </a>
+        </li>
+        <% }%>
+      </ul>
+    </div>
+  
+    <div id="toTop"><img src="/images/top.png" alt=""></div>
+      <!-- 注册  登录 -->
+    <% include modal.ejs%>
+
+    <script src="/javascripts/jquery.min.js"></script>
+    <script src="/javascripts/bootstrap.js"></script>
+
+     <!--  窗口滚动导航缩放-->
+    <script type="text/javascript" src="/javascripts/scroll.js"></script>
+    <!-- 商家登录注册 -->
+    <script src="/javascripts/shop_register_login.js"></script>
+
+    <!-- 热门查询 -->
+    <script src="/javascripts/hotsQuery.js"></script>
+
+    <!-- 回到顶部 -->
+    <script>
+      $(function(){
+        $(window).scroll(function(){
+          if($(document).scrollTop()>600){      
+             $("#toTop").css('display',"block")
+          }
+          else{
+             $("#toTop").css('display',"none")
+          }
+        })
+
+        $('#toTop').click(function(){
+             $('body').animate({ scrollTop: 0 }, 500);  
+        })
+      })
+    </script>
+  </body>
+</html>

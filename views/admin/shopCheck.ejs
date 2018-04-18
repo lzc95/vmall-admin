@@ -1,0 +1,125 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>后台管理页面</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/stylesheets/bootstrap.min.css" rel="stylesheet">
+
+    <link href="/stylesheets/dashboard.css" rel="stylesheet">
+     <style type="text/css">
+       body{
+        overflow-y:scroll; 
+       }
+    </style>
+  </head>
+
+  <body>
+
+    <% include header.ejs%>
+
+    <div class="container-fluid">
+      <div class="row">
+         <% include nav.ejs%>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+              <h1 class="page-header">账户审核</h1>
+             
+              <table class="table table-hover table-bordered  table-condensed " style="width:600px;">
+                <thead>            
+                  <tr >
+                   <th class="col-lg-1">序号<span class='glyphicon glyphicon-pushpin'></span></th>
+                   <th class="col-lg-1">用户名<span class='glyphicon glyphicon-pushpin'></span></th>
+                   <th class="col-lg-1">证件<span class='glyphicon glyphicon-pushpin'></span></th>
+                   <th class="col-lg-1">通过<span class='glyphicon glyphicon-pushpin'></span></th>
+                   <th class="col-lg-1">拒绝<span class='glyphicon glyphicon-pushpin'></span></th>
+                  </tr>            
+                </thead>
+                <tbody >
+                  <% for(var i=0;i<shopData.length;i++){%>
+                  <tr>
+                    <td class="user_num"><%=i+1 %></td>
+                    <td style="display: none;" class="shopId"><%=shopData[i].shop_id%></td>
+                    <td class="username"><%= shopData[i].shop_name%></td>
+                    <td class="shopImg"><a href="/upload/<%=shopData[i].shop_cardImg%>" target="_blank"><img src="/upload/<%=shopData[i].shop_cardImg%>" alt="" style="width:100px;height:80px"></a></td>
+                     <td><button type="button" class="btn btn-success btn-sm pass">通过<span class='glyphicon glyphicon-ok'></span></button></td>
+                    <td><button type="button" class="btn btn-danger btn-sm delete">拒绝<span class='glyphicon glyphicon-remove'></span></button></td>
+                  </tr>
+                  <% }%>
+                </tbody>
+              </table>
+        </div>
+      </div>
+    </div>
+
+    <script src="/javascripts/jquery.min.js"></script>
+    <script src="/javascripts/bootstrap.js"></script>
+    <script type="text/javascript">
+        $(function(){
+          // 删除账户
+            for(var i=0;i<$('.shopId').length;i++){
+              (function(j){
+                 $('.delete').eq(j).click(function(){
+                   if(confirm('确认拒绝这个账户申请么？')){
+                        $.ajax({
+                         url:'/admin/shopCheck',
+                         type:'post',
+                         data:{
+                           act:'del',
+                           id:$('.shopId').eq(j).html()
+                         },
+                         success:function(data){
+                             alert(data.msg);
+                             if(data.code==1){
+                                $('.delete').eq(j).parent().parent().remove();
+
+                             }
+                              window.location.href='/admin/shopCheck'
+                         }
+                        })
+                   }     
+                 })                
+              })(i)
+            }
+
+            // 通过账户
+            for(var i=0;i<$('.shopId').length;i++){
+              (function(j){
+                 $('.pass').eq(j).click(function(){
+                 
+                        $.ajax({
+                         url:'/admin/shopCheck',
+                         type:'post',
+                         data:{
+                           act:'pass',
+                           id:$('.shopId').eq(j).html()
+                         },
+                         success:function(data){
+                             alert(data.msg);
+                             if(data.code==1){
+                                $('.pass').eq(j).parent().parent().remove();
+
+                             }
+                              window.location.href='/admin/shopCheck'
+                         }
+                        })    
+                 })                
+              })(i)
+            }
+
+        })
+
+        $(function(){
+            $("ul#nav li").eq(5).attr('class','active');
+        })
+    </script>
+  </body>
+</html>

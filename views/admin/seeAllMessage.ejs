@@ -1,0 +1,120 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>后台管理页面</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/stylesheets/bootstrap.min.css" rel="stylesheet">
+
+    <link href="/stylesheets/dashboard.css" rel="stylesheet">
+     <style type="text/css">
+       body{
+        overflow-y:scroll; 
+       }
+       
+       ul#message li{
+        height: 35px;
+        line-height: 35px;
+        width: 500px;
+        border-bottom: 1px dotted #ccc;
+       }
+       .receiver{
+        width: 100px;
+        color:#428BCA;
+        display: inline-block;
+       }
+       .title{
+        width: 200px;
+        display:inline-block;
+        cursor: pointer;
+       }
+       .del_message{
+        margin-left: 30px;
+       }
+       .messageCon{
+        display: none;
+        width: 500px;
+        height: 100px;
+        border:1px solid #ccc;
+        overflow-y:auto;
+       }
+    </style>
+  </head>;
+
+  <body>
+
+    <% include header.ejs%>
+
+    <div class="container-fluid">
+      <div class="row">
+         <% include nav.ejs%>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+            <!-- 消息中心 -->
+            <h1 class="page-header">已发送的消息</h1>
+            <ul id="message">
+              <% for(var i=0;i<messageData.length;i++){%>
+              <li>
+                 <span style="display: none;"><%=messageData[i].news_id%></span>
+                 <span class="receiver">@<%=messageData[i].receiver%></span>
+                 <span class="title"><%=messageData[i].news_title%></span>
+                 <span class="date"><%=messageData[i].date%></span>
+                 <span class="glyphicon glyphicon-trash del_message"></span>
+              </li>
+              <p class="messageCon"><%=messageData[i].news_con%></p>
+              <% }%>
+            </ul>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="/javascripts/jquery.min.js"></script>
+    <script src="/javascripts/bootstrap.js"></script>
+    <script>
+      $("#nav li").eq(8).attr('class','active');
+    </script>
+    
+    <script>
+        $(function(){
+          // <!-- 时间字符串格式化 -->
+            var time=[];
+            var commonTime=[];
+            var last=[];
+            var unixTimestamp=[]
+            for(var i=0;i<$('.date').length;i++){
+              time[i]=parseInt($('.date').eq(i).html());
+              console.log(time[i])
+              unixTimestamp[i] = new Date( time[i] ) ;
+              commonTime[i] = unixTimestamp[i].toLocaleString();
+              // last[i]=commonTime[i].indexOf(' ');
+              $('.date').eq(i).html(commonTime[i])
+            }
+
+         // 显示隐藏消息内容
+           for(var i=0;i<$('.title').length;i++){
+              (function(j){
+                  $('.title').eq(j).click(function(){
+                      if( $('.messageCon').eq(j).css('display')=='none'){
+                         $('.messageCon').eq(j).css('display','block');
+                      }
+                      else{
+                         $('.messageCon').eq(j).css('display','none');
+                      }                   
+                  })
+              })(i)
+           }
+
+        })
+    </script>
+  </body>
+</html>
