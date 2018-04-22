@@ -38,10 +38,11 @@ module.exports=function(){
                     var gPrice=req.body.gPrice;
                     var gSum=req.body.gSum;
                     var scId=req.body.scId;
+                    var gAttr=req.body.gAttr;
                     var gTime=new Date().getTime();
                     var scId=req.body.scId;
-                  db.query(`INSERT INTO goods (scId,gName,gPrice,gSum,gPic,gTime)VALUES('${scId}',
-                    '${gName}','${gPrice}','${gSum}','${newFileName}','${gTime}')`,(err,data)=>{
+                  db.query(`INSERT INTO goods (scId,gName,gPrice,gSum,gPic,gTime,attr)VALUES('${scId}',
+                    '${gName}','${gPrice}','${gSum}','${newFileName}','${gTime}','${gAttr}')`,(err,data)=>{
                         if(err){
                           console.error(err);
                         }

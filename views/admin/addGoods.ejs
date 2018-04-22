@@ -54,6 +54,14 @@
                           </div>
                       </div>
                       <div class="form-group">
+                        <label class="col-md-2 control-label">
+                            商品属性：
+                        </label>
+                        <div class="col-md-5">
+                            <input type="text" class="form-control" placeholder="多个属性用#分隔输入"  id="gAttr" name="gPrice">
+                        </div>
+                      </div>
+                      <div class="form-group">
                           <label class="col-md-2 control-label">
                               商品数量：
                           </label>
@@ -111,6 +119,7 @@
                    gName:$('#gName').val(),
                    gPrice:$('#gPrice').val(),
                    gSum:$('#gSum').val(),
+                   gAttr:$('#gAttr').val(),
                    scId:$('#scName').val()
                 },
                 fileElementId:'gPic',//文件上传控件的id属性 

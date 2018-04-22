@@ -6,74 +6,39 @@ var router = express.Router();
 module.exports=function(){
 	var db=mysqlConn();
 	
-
-	router.get('/',(req,res)=>{
-		if(req.session['user_id']){
-            res.render('web/changePass.ejs',{username:req.session['username']});
-	    }
-	    else{
-	    	res.redirect('/');
-	      
-	    }
-		
+	router.post('/',(req,res)=>{
+		var oldPassword=md5(req.body.oldPass);
+		var newPassword=md5(req.body.newPass);
+		var uId=req.session['uId']
+		db.query(`select * from customer where uId='${uId}'`,(err,data)=>{
+			if(err){
+				console.log(err);
+			}
+			else{
+				if(data[0].password==oldPassword){
+				   db.query(`UPDATE customer SET password='${newPassword}' WHERE uId='${uId}'`,(err,data)=>{
+					  if(err){
+						console.log(err);
+					  }
+					  else{
+						 res.send({
+						   code:1,
+						   msg:'修改成功'
+						 })
+					  }
+				   })
+				}
+				else{
+				   res.send({
+					 code:0,
+					 msg:'原密码输入不正确'
+				   })
+				}
+			}
+		})
 	})
-
-
-	router.post('/',(req,res)=>{ 
        
-         var user_id=req.session['user_id']
-         switch(req.body.act){
-         	// 查询原密码是否正确
-         	case 'query':{
-         		 db.query(`SELECT * FROM user_table WHERE user_id='${user_id}'`,(err,data)=>{
-	         	  if(err){
-	         	  	console.error(err);
-	         	  }
-	         	  else{
-	         	  	 if(data.length==0){
-	         	  	 	 res.status(500).send({
-	         	  	 	 	code:-1,
-	         	  	 	 	msg:'数据库查询失败！'
-	         	  	 	 }).end();
-	         	  	 }
-	         	  	 else{
-	         	  	 	 if(md5(req.body.password)==data[0].password){
-	         	  	 	 	 res.send({
-	         	  	 	 	 	code:1,
-	         	  	 	 	 	msg:''
-	         	  	 	 	 })
-	         	  	 	 }
-	         	  	 	 else{
-	         	  	 	 	 res.send({
-	         	  	 	 	 	code:0,
-	         	  	 	 	 	msg:'原密码不正确！'
-	         	  	 	 	 })
-	         	  	 	 }
-
-	         	  	 }
-	         	  }
-	            })
-         		};break;
-         		// 修改密码
-         	case 'change':{
-         		 var password=md5(req.body.password); 
-         		 var user_id=req.session['user_id'];
-         		 db.query(`UPDATE user_table SET password='${password}' WHERE user_id='${user_id}'`,(err,data)=>{
-         		 	  if(err){
-         		 	  	console.error(err);
-         		 	  }
-         		 	  else{
-                          res.send({
-                          	code:1,
-                          	msg:'修改密码成功'
-                          })
-         		 	  }
-         		 })
-         	};break;
-
-         }
         
-	 })
 
 	return router;
 }

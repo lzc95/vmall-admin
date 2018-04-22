@@ -30,7 +30,7 @@ router.use('/seeAllSubType',require('./seeAllSubType')());
  // 添加商品
  router.use('/addGoods',require('./addGoods')());
  // 管理全部书籍
- router.use('/seeAllBook',require('./seeAllBook')());
+ router.use('/seeAllGoods',require('./seeAllGoods')());
  // 账户管理
  router.use('/manageShop',require('./manageShop')());
  // 商铺审核

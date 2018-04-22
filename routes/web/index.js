@@ -71,8 +71,8 @@ router.post('/register',(req,res)=>{
   var userName=req.body.userName;
   var password=md5(req.body.password);
   var reg_time=new Date().getTime();
-  db.query(`INSERT INTO customer (nickName,userName,password,reg_time) VALUES ('${nickName}',
-  '${userName}','${password}','${reg_time}') `,(err,data)=>{
+  db.query(`INSERT INTO customer (nickName,userName,password,reg_time,payPass) VALUES ('${nickName}',
+  '${userName}','${password}','${reg_time}','*') `,(err,data)=>{
       if(err){
         console.error(err);
       }
@@ -181,13 +181,14 @@ router.get('/getCollectGoods',(req,res)=>{
  router.post('/addCart',(req,res)=>{
   var uId=req.body.uId;
   var gId=req.body.gId;
-  db.query(`SELECT * FROM cart WHERE uId='${uId}' AND gId='${gId}'`,(err,data)=>{
+  var checkAttr=req.body.attr;
+  db.query(`SELECT * FROM cart WHERE uId='${uId}' AND gId='${gId}' AND checkAttr='${checkAttr}'`,(err,data)=>{
     if(err){
       console.error(err);
     }
     else{
         if(data.length==0){
-          db.query(`INSERT INTO cart (uId,gId,num) VALUES('${uId}','${gId}',1)`,(err,data)=>{
+          db.query(`INSERT INTO cart (uId,gId,num,checkAttr) VALUES('${uId}','${gId}',1,'${checkAttr}')`,(err,data)=>{
             if(err){
               console.error(err);
             }
@@ -200,7 +201,7 @@ router.get('/getCollectGoods',(req,res)=>{
           }) 
         }
         else{
-          db.query(`UPDATE cart SET num=num+1 WHERE uId='${uId}' AND gId='${gId}'`,(err,data)=>{
+          db.query(`UPDATE cart SET num=num+1 WHERE uId='${uId}' AND gId='${gId}' AND checkAttr='${checkAttr}'`,(err,data)=>{
             if(err){
               console.error(err);
             }
@@ -360,12 +361,13 @@ router.post('/submitOrder',(req,res)=>{
       temp.push(order_number);
       temp.push(cart[i].gId);
       temp.push(cart[i].num);
-      temp.push(cart[i].gPrice);  
+      temp.push(cart[i].gPrice);
+      temp.push(cart[i].checkAttr);  
       arr.push(temp);  
    }
 
    //插入订单商品表
-   var sql = "INSERT INTO order_goods(`order_number`,`goods_id`,`goods_num`,`goods_price`) VALUES ?";
+   var sql = "INSERT INTO order_goods(`order_number`,`goods_id`,`goods_num`,`goods_price`,`goods_attr`) VALUES ?";
    db.query(sql,[arr],function (err,rows,fields) {
     if(err){
        console.log('INSERT ERROR - ',err.message);
@@ -396,13 +398,136 @@ router.post('/submitOrder',(req,res)=>{
 
     //更新商品销售数量
     for(var i=0;i<cart.length;i++){
-      db.query(`UPDATE goods SET sale='${cart[i].num}' WHERE gId='${cart[i].gId}'`)
+      db.query(`UPDATE goods SET sale=sale+'${cart[i].num}' WHERE gId='${cart[i].gId}'`)
     }
   
 
 })
- // 修改密码
-//  router.use('/changePass',require('./changePass')());
+
+
+//获取用户当前支付密码状态(是否设置)
+router.get('/payPassStatus',(req,res)=>{
+    var uId=req.session['uId'];
+    db.query(`select * from customer where uId='${uId}'`,(err,data)=>{
+        if(err){
+          console.log(err);
+        }
+        else{
+           if(data.payPass=='*'){
+               res.send({
+                code:'no'
+               })
+           }
+           else{
+              res.send({
+                code:'yes'
+              })
+           }
+        }
+    })
+})
+
+//添加支付密码
+router.post('/addPayPass',(req,res)=>{
+     var payPass=md5(req.body.payPass);
+     var uId=req.session['uId'];
+     db.query(`UPDATE customer SET payPass='${payPass}' WHERE uId='${uId}'`,(err,data)=>{
+         if(err){
+             console.log(err);
+             res.send({
+               code:0,
+               msg:'设置失败'
+             })
+         }
+         else{
+             res.send({
+                 code:1,
+                 msg:'设置成功'
+             })
+         }
+     })
+})
+
+//修改支付密码
+router.post('/updatePayPass',(req,res)=>{
+  var oldPayPass=md5(req.body.oldPayPass);
+  var newPayPass=md5(req.body.newPayPass);
+  var uId=req.session['uId'];
+  db.query(`select * from customer where uId='${uId}'`,(err,data)=>{
+      if(err){
+          console.log(err);
+      }
+      else{
+          if(data[0].payPass==oldPayPass){
+             db.query(`UPDATE customer SET payPass='${newPayPass}' WHERE uId='${uId}'`,(err,data)=>{
+                if(err){
+                  console.log(err);
+                }
+                else{
+                   res.send({
+                     code:1,
+                     msg:'修改成功'
+                   })
+                }
+             })
+          }
+          else{
+             res.send({
+               code:0,
+               msg:'原密码输入不正确'
+             })
+          }
+      }
+  })
+})
+
+
+router.post('/checkPayPassword',(req,res)=>{
+    var uId=req.session['uId'];
+    var payPass=md5(req.body.payPass.join(''));
+    db.query(`select * from customer where uId='${uId}'`,(err,data)=>{
+       if(err){
+         console.log(err);
+       }
+       else{
+          if(data[0].payPass==payPass){
+               res.send({
+                   code:1,
+                   msg:'支付成功'
+               })
+          }
+          else{
+              res.send({
+                code:0,
+                msg:'支付失败'
+              })
+          }
+       }
+    })
+})
+
+
+
+//获取所有订单
+router.post('/allOrder',(req,res)=>{
+   var uId=req.session['uId'];
+   db.query(`select * from order_table,order_goods,goods where 
+   order_table.order_number=order_goods.order_number and order_goods.goods_id=goods.gId
+   and order_table.uId='${uId}'`,(err,data)=>{
+         if(err){
+           console.log(err)
+         }
+         else{
+             res.send({
+               code:1,
+               order:data
+             })
+         }
+   })
+})
+
+ // 修改账户密码
+  router.use('/changePass',require('./changePass')());
 
  // 退出登录
 router.get('/logout',(req,res)=>{

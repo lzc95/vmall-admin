@@ -51,7 +51,7 @@ app.use(cookieParser('猜不到'));
   app.use(cookieSession({
     name: 'sess_id',
     keys: keys,
-    maxAge: 20*60*1000  //20min
+    maxAge: 60*60*1000  //60min
   }));
 })();
 
