@@ -513,7 +513,7 @@ router.post('/allOrder',(req,res)=>{
    var uId=req.session['uId'];
    db.query(`select * from order_table,order_goods,goods where 
    order_table.order_number=order_goods.order_number and order_goods.goods_id=goods.gId
-   and order_table.uId='${uId}'`,(err,data)=>{
+   and order_table.uId='${uId}' order by order_table.order_id desc`,(err,data)=>{
          if(err){
            console.log(err)
          }
@@ -523,6 +523,29 @@ router.post('/allOrder',(req,res)=>{
                order:data
              })
          }
+   })
+})
+
+
+//获取订单详细信息
+router.post('/orderDetail',(req,res)=>{
+   var order_number=req.body.order_number;
+   var uId= req.session['uId'];
+   db.query(`select * from order_table,order_goods,goods,address where 
+   order_table.order_number=order_goods.order_number and order_table.order_number='${order_number}'
+   and order_table.aId=address.aId and order_goods.goods_id=goods.gId`,(err,data)=>{
+       if(err){
+           console.log(err)
+           res.send({
+              code:-1,
+              msg:'数据库异常'
+           })
+       }
+       else{
+         res.send({
+            orderDetail:data
+         })
+       }
    })
 })
 
