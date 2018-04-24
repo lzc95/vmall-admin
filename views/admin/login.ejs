@@ -9,19 +9,26 @@
     <link href="/stylesheets/signin.css" rel="stylesheet"/>
     <script src="/javascripts/jquery.min.js"></script>
     <style>
-   /* html,body,div{
+   html,body,div{
       margin:0px;
       padding:0px;
     }
-    .container{
+    .container form{
+      display: block;
       width: 400px;
-      height: 200px;
+      height: 400px;
       position: absolute;
       left:50%;
       top:50%;
       margin-left: -200px;
-      margin-top: -100px;
-    }*/
+      margin-top: -200px;
+    }
+    .form-signin{
+        width:400px;
+    }
+    .form-signin-heading{
+        width:400px;
+    }
     </style>
 </head>
 
@@ -30,7 +37,7 @@
 <div class="container" >
 
     <form action="" method="post" class="form-signin">
-        <h2 class="form-signin-heading">开心购物街微商城后台管理系统</h2>
+        <h2 class="form-signin-heading">开心购物街管理系统</h2>
         <input type="text" name="username" id="username" class="form-control" placeholder="用户名" required autofocus>
         <input type="password" name="password" id="password" class="form-control"  placeholder="密码" required>
         <!-- <div id="dept">

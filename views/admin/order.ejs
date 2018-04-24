@@ -1,0 +1,100 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>后台管理页面</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/stylesheets/bootstrap.min.css" rel="stylesheet">
+
+    <link href="/stylesheets/dashboard.css" rel="stylesheet">
+     <style type="text/css">
+       body{
+        overflow-y:scroll; 
+       }
+    </style>
+  </head>
+
+  <body>
+
+    <% include header.ejs%>
+
+    <div class="container-fluid">
+      <div class="row">
+         <% include nav.ejs%>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+              <h1 class="page-header">订单管理</h1>
+               <table class="table table-hover table-bordered  table-condensed " style="width:1200px;text-align: center">
+                <thead>            
+                  <tr>
+                   <th  rowspan="2">序号<span class='glyphicon glyphicon-pushpin'></span></th>
+                   <th  rowspan="2">订单编号<span class='glyphicon glyphicon-pushpin'></span></th>
+                   <th   style='width:600px'  colspan="4" >订单商品<span class='glyphicon glyphicon-pushpin'></span> </th>
+                   <th  rowspan="2">买家支付金额<span class='glyphicon glyphicon-pushpin'></span></th>
+                   <th  rowspan="2">收货地址<span class='glyphicon glyphicon-pushpin'></span></th>
+                   <th  rowspan="2">快递单号<span class='glyphicon glyphicon-pushpin'></span></th>
+                   <th  rowspan="2">是否发货<span class='glyphicon glyphicon-pushpin'></span></th>
+                   <th  rowspan="2">买家是否收货<span class='glyphicon glyphicon-pushpin'></span></th>
+                  </tr>  
+                  <tr >
+                        <td style='width:150px'>商品ID</td>
+                        <td style='width:150px'>商品简述</td>
+                        <td style='width:150px'>商品支付价格</td>
+                        <td style='width:150px'>数量</td>
+                        
+                  </tr>         
+                </thead>
+                <tbody >
+                  <% for(var i=0;i<order.length;i++){%>
+                  <tr>
+                    <td class="user_num"><%=i+1 %></td>
+                    <td ><%=order[i].name%></td>
+                    <td colspan="4">
+                      <% for(var j=0;j<order[i].content.length;j++){%>
+                        <table >
+                        <tr style='height:60px;'>
+                            <td style='width:150px'><%=order[i].content[j].gId%></td>
+                            <td style='width:150px'><%=order[i].content[j].gName%></td>
+                            <td style='width:150px'><%=order[i].content[j].goods_price%></td>
+                            <td style='width:150px'>X<%=order[i].content[j].goods_num%></td>
+                            
+                        </tr>
+                        </table>
+                      
+                      <% }%>
+                    </td>
+                    <td ><%= order[i].price%></td>
+                    <td >
+                      <%= order[i].addressName%>
+                      <%= order[i].phone%><br/>
+                      <%= order[i].address%>
+                    </td>
+                    <td ><%= order[i].ship_number%></td>
+                    <td ><%= order[i].is_receipt%></td>
+                    <td ><%= order[i].is_ship%></td>
+                  </tr>
+                  <% }%>
+                </tbody>
+              </table>
+        </div>
+      </div>
+    </div>
+
+    <script src="/javascripts/jquery.min.js"></script>
+    <script src="/javascripts/bootstrap.js"></script>
+    <script type="text/javascript">
+        $(function(){
+            $("ul#nav li").eq(6).attr('class','active');
+        })
+
+    </script>
+  </body>
+</html>

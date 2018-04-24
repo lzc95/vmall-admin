@@ -413,7 +413,7 @@ router.get('/payPassStatus',(req,res)=>{
           console.log(err);
         }
         else{
-           if(data.payPass=='*'){
+           if(data[0].payPass=='*'){
                res.send({
                 code:'no'
                })
@@ -481,7 +481,7 @@ router.post('/updatePayPass',(req,res)=>{
   })
 })
 
-
+//验证支付密码
 router.post('/checkPayPassword',(req,res)=>{
     var uId=req.session['uId'];
     var payPass=md5(req.body.payPass.join(''));

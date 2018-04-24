@@ -29,10 +29,10 @@ router.use('/seeAllSubType',require('./seeAllSubType')());
 
  // 添加商品
  router.use('/addGoods',require('./addGoods')());
- // 管理全部书籍
+ // 管理全部商品
  router.use('/seeAllGoods',require('./seeAllGoods')());
- // 账户管理
- router.use('/manageShop',require('./manageShop')());
+ // 订单管理
+ router.use('/order',require('./order')());
  // 商铺审核
  router.use('/shopCheck',require('./shopCheck')());
   // 修改密码
